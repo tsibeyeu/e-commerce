@@ -6,7 +6,7 @@ import Contact from './pages/Contact.jsx'
 import Collection from './pages/Collection.jsx'
 import Orders from './pages/Orders.jsx'
 import Product from './pages/Product'
-import Card from './pages/Card.jsx'
+import Cart from './pages/Cart.jsx'
 import PlaceOrders from './pages/PlaceOrders.jsx'
 import Login from './pages/Login.jsx'
 import Navbar from './components/Navbar.jsx'
@@ -23,7 +23,7 @@ const App = () => {
         <Route path='/collection' element={<Collection />} />
         <Route path='/orders' element={<Orders />} />
         <Route path='/product/:id' element={<Product />} />
-        <Route path='/card' element={<Card/>} />
+        <Route path='/cart' element={<Cart/>} />
         <Route path='/place-order' element={<PlaceOrders/>} />
         <Route path='/login ' element="<Login/>" />
         <Route path='*' element={<h1 className='text-center mt-20 text-3xl'>404 Not Found</h1>} />

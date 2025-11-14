@@ -8,19 +8,19 @@ const Navbar = () => {
     <div className='flex justify-between items-center py-5 font-medium'>
         <img src={assets.logo}  className="w-36" alt="" />
         <ul className='hidden md:flex gap-8 text-lg text-gray-700'>
-            <NavLink onClick={()=>setVisible(true)}to="/" className="flex gap-1 flex-col item-ceter">
+            <NavLink onClick={()=>setVisible(false)} to="/" className="flex gap-1 flex-col item-ceter">
                 <p>Home</p>
                 <hr className='h-[1.5px] w-2/4 bg-gray-500  border-none hidden'/>
             </NavLink>
-            <NavLink onClick={()=>setVisible(true)}to="/collection" className="flex gap-1 flex-col item-ceter">
+            <NavLink onClick={()=>setVisible(false)} to="/collection" className="flex gap-1 flex-col item-ceter">
                 <p>Collection</p>
                 <hr className='h-[1.5px] w-2/4 bg-gray-500  border-none hidden'/>
             </NavLink>
-            <NavLink onClick={()=>setVisible(true)}to="/about" className="flex gap-1 flex-col item-ceter">
+            <NavLink onClick={()=>setVisible(false)} to="/about" className="flex gap-1 flex-col item-ceter">
                 <p>About</p>
                 <hr className='h-[1.5px] w-2/4 bg-gray-500  border-none hidden'/>
             </NavLink>
-            <NavLink onClick={()=>setVisible(true)}to="/contact" className="flex gap-1 flex-col item-ceter">
+            <NavLink onClick={()=>setVisible(false)} to="/contact" className="flex gap-1 flex-col item-ceter">
                 <p>Contact</p>
                 <hr className='h-[1.5px] w-2/4 bg-gray-500  border-none hidden'/>
             </NavLink>
@@ -57,10 +57,10 @@ const Navbar = () => {
                     <p>Back</p>
                 </div>
 
-                <NavLink onClick={()=>setVisible(false)}to="/" className="p-4 border-t border-gray-200">Home</NavLink>
-                <NavLink onClick={()=>setVisible(false)}to="/collection" className="p-4 border-t border-gray-200">Collection</NavLink>
-                <NavLink onClick={()=>setVisible(false)}to="/about" className="p-4 border-t border-gray-200">About</NavLink>
-                <NavLink onClick={()=>setVisible(false)}to="/contact" className="p-4 border-t border-gray-200">Contact</NavLink>
+                <NavLink onClick={()=>setVisible(false)} to="/" className="p-4 border-t border-gray-200">Home</NavLink>
+                <NavLink onClick={()=>setVisible(false)} to="/collection" className="p-4 border-t border-gray-200">Collection</NavLink>
+                <NavLink onClick={()=>setVisible(false)} to="/about" className="p-4 border-t border-gray-200">About</NavLink>
+                <NavLink onClick={()=>setVisible(false)} to="/contact" className="p-4 border-t border-gray-200">Contact</NavLink>
 
             </div>
 
