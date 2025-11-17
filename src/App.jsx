@@ -10,6 +10,7 @@ import Cart from './pages/Cart.jsx'
 import PlaceOrders from './pages/PlaceOrders.jsx'
 import Login from './pages/Login.jsx'
 import Navbar from './components/Navbar.jsx'
+import Footer from './components/Footer.jsx'
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         <Route path='/login ' element="<Login/>" />
         <Route path='*' element={<h1 className='text-center mt-20 text-3xl'>404 Not Found</h1>} />
       </Routes>
+      <Footer />
       
     </div>
   )
