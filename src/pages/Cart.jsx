@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import { ShopContext } from '../context/ShopContext';
 import Title from '../components/Title';
 import { assets } from '../assets/assets';
+import CartTotal from '../components/CartTotal';
 
 const Card = () => {
-  const {products,curreny,cartItems,updateQuantity}=useContext(ShopContext);
+  const {products,curreny,cartItems,updateQuantity,Navigate}=useContext(ShopContext);
 
   const [cartData,setCartData]=useState([]);
 
@@ -23,7 +24,7 @@ const Card = () => {
       }
     }
     setCartData(tempData);
-  },[cartData])
+  },[cartItems])
   return (
     <div className='border-t pt-14' >
       <div className='text-3xl mb-3'>
@@ -48,13 +49,22 @@ const Card = () => {
               </div>
               </div>
               </div>
-              <input className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1' type="number" min={1} defaultValue={item.quantity} />
+              <input onChange={(e)=>e.target.value === '' || e.target.value === 0 ? null : updateQuantity(item.id,item.size,Number(e.target.value))} className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1' type="number" min={1} defaultValue={item.quantity} />
               <img onClick={()=>updateQuantity(item.id,item.size,0)} src={assets.bin_icon} alt="" className="w-4 mr-4 sm:w-5 cursor-pointer" />
             </div>
           )
 
         })
         }
+      </div>
+      <div className='flex justify-end my-20'>
+        <div className='w-full sm:w-[450px]'>
+          <CartTotal/>
+          <div  className='w-full text-end'>
+          <button onClick={()=>Navigate('/place-order')} className='cursor-pointer bg-black text-white text-sm py-3 px-8 mt-6 hover:bg-gray-800 duration-300'>PROCEED TO CHECKOUT</button>
+          </div>
+
+        </div>
       </div>
       
     </div>
