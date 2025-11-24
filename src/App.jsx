@@ -29,9 +29,9 @@ const App = () => {
         <Route path='/collection' element={<Collection />} />
         <Route path='/orders' element={<Orders />} />
         <Route path='/product/:productId' element={<Product />} />
+        <Route path='/login' element={<Login/>} />
         <Route path='/cart' element={<Cart/>} />
         <Route path='/place-order' element={<PlaceOrders/>} />
-        <Route path='/login ' element="<Login/>" />
         <Route path='*' element={<h1 className='text-center mt-20 text-3xl'>404 Not Found</h1>} />
       </Routes>
       <Footer />
