@@ -51,18 +51,29 @@ export const addProduct = async (req, res) => {
 
     //fucntion for list products
 export const listProducts = async (req, res) => {
-    try {} catch (error) {
+    try {
+        // const products = await ProductModel.find().sort({ date: -1 });
+        const products = await ProductModel.find({});
+        res.json({ success: true, products });
+    } catch (error) {
         res.status(500).json({ success: false, message: "Server Error" });
     }};
 
     // function for removing product
 export const removeProduct = async (req, res) => {
-    try {} catch (error) {
+    try {
+        await ProductModel.findByIdAndDelete(req.body.id)
+        res.json({ success: true, message: "Product removed successfully" });
+    } catch (error) {
         res.status(500).json({ success: false, message: "Server Error" });
     }};
 
     // function for single product info 
 export const singleProductInfo = async (req, res) => {
-    try {} catch (error) {
+    try {
+        const {productId}=req.body
+        const product=await ProductModel.findById(productId)
+        res.json({ success: true, product });
+    } catch (error) {
         res.status(500).json({ success: false, message: "Server Error" });
     }};
