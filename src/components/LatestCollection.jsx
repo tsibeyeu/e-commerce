@@ -6,6 +6,8 @@ import ProductItem from './ProductItem.jsx';
 const LatestCollection = () => {
     const {products}=useContext(ShopContext);
     const [LatestProducts, setLatestProducts] = useState([]);
+    console.log(products);
+    
 
     useEffect(() => {
         const latest = products.slice(0,10); // Get the first 10 products as the latest collection
