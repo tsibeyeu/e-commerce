@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
-import { backend_url, currency } from "../App.js";
+import { backend_url, currency } from "../App.jsx";
 import { toast } from "react-toastify";
 import { assets } from "../assets/assets.js";
 
@@ -42,8 +42,12 @@ const Orders = ({ token }) => {
       
     }
 
-  }
-  useEffect(() => {}, [token]);
+  } 
+  
+  useEffect(() => {
+    fetchAllOrders()
+
+  }, [token]);
   return (
     <div>
       <h3>Order Page</h3>

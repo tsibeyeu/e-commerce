@@ -23,6 +23,7 @@ const Add = ({token}) => {
 
     try {
       const formData = new FormData()
+       console.log('bestseller before submit:', bestseller) 
 
       formData.append("name",name)
       formData.append("description",description)
