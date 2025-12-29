@@ -11,3 +11,11 @@ userRouter.post('/register', registerUser);
 userRouter.post('/admin', adminLogin);
 
 export default userRouter;
+/*
+//   SIMPLIEPIED  method to use common route
+app.use('/api/user',useRoute) // use common route for every route methods and this is to connect the middleware to app
+
+const useRoute=express.route() // this is middlewar
+useRoute.route('/').get().pos()
+
+ */
