@@ -1,15 +1,24 @@
-import express from 'express'
-import { loginUser,registerUser,adminLogin } from '../controllers/userController.js'
+import express from "express";
+import {
+  loginUser,
+  registerUser,
+  adminLogin,
+  getMe,
+  updateMe,
+  changePassword,
+} from "../controllers/userController.js";
 
 const userRouter = express.Router();
 
 // User login route
-userRouter.post('/login', loginUser);
+userRouter.post("/login", loginUser);
 // User registration route
-userRouter.post('/register', registerUser); 
+userRouter.post("/register", registerUser);
 // Admin login route
-userRouter.post('/admin', adminLogin);
-
+userRouter.post("/admin", adminLogin);
+userRouter.get("/me", getMe);
+userRouter.put("/me", updateMe);
+userRouter.put("/password", changePassword);
 export default userRouter;
 /*
 //   SIMPLIEPIED  method to use common route
