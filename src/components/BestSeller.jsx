@@ -1,70 +1,76 @@
-// import React, { useContext, useEffect, useState } from 'react'
-// import { ShopContext } from '../context/ShopContext'
-// import Title from './Title';
-// import ProductItem from './ProductItem';
-
-// const BestSeller = () => {
-//     const {products}=useContext(ShopContext);
-    
-//     const [bestSeller,setBestSeller]=useState([]);
-//     console.log('products',products);
-//     console.log('bestSeller',bestSeller);
-
-//     useEffect(()=>{
-//         const bestsellers = products.filter((product) => (product.bestSeller));
-//         setBestSeller(bestsellers.slice(0,5));
-//     },[products])
-
-// ...existing code...
-import React, { useContext, useEffect, useState } from 'react'
-import { ShopContext } from '../context/ShopContext'
-import Title from './Title';
-import ProductItem from './ProductItem';
+import React, { useContext, useEffect, useState } from "react";
+import { ShopContext } from "../context/ShopContext";
+import Title from "./Title";
+import ProductItem from "./ProductItem";
+import { motion } from "framer-motion";
 
 const BestSeller = () => {
-    const {products}=useContext(ShopContext);
-    
-    const [bestSeller,setBestSeller]=useState([]);
-    console.log('products',products);
-    console.log('bestSeller',bestSeller);
+  const { products } = useContext(ShopContext);
+  const [bestSeller, setBestSeller] = useState([]);
 
-    useEffect(()=>{
-        if (!Array.isArray(products) || products.length === 0) {
-            setBestSeller([]);
-            return;
-        }
+  useEffect(() => {
+    if (products && products.length > 0) {
+      const bestsellers = products.filter((product) => {
+        const v = product?.bestSeller;
+        return v === true || v === "true" || v === 1 || v === "1" || v === "on";
+      });
+      setBestSeller(bestsellers.slice(0, 5));
+    }
+  }, [products]);
 
-        console.log('best flags:', products.map(p => p?.bestSeller));
+  if (bestSeller.length === 0) return null;
 
-        const bestsellers = products.filter(product => {
-            const v = product?.bestSeller;
-            // accept boolean true, string "true", numeric 1/"1", or form values like "on"
-            return v === true || v === 'true' || v === 1 || v === '1' || v === 'on';
-        });
-
-        setBestSeller(bestsellers.slice(0,5));
-    },[products])
-// ...existing code...
   return (
-    <div className='my-10 '>
-        <div className='py-4 text-center text-3xl'>
-            <Title title1={"BEST"} title2={"SELLERS"}/>
-            <p className='w-3/4 m-auto text-gray-600 text-xl sm:text-sm md:text-base'> "Explore our top-selling products, loved by customers for their quality and style. Find your new favorite today!"
-            </p>
-        </div>
-        {/* BestSeller Products Grid */}
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
-            {
-                bestSeller.map((products,index)=>(
-                    
-                    <ProductItem  key={index} image={products.image} price={products.price} id={products._id} name={products.name}/>
-                ))
-            }
-      </div>
-            
-      
-    </div>
-  )
-}
+    /* This section now breaks out of the parent container to take the full browser width */
+    <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] py-24 px-6 md:px-16 bg-[#fdfcf7] border-y border-slate-100">
+      <div className="text-center mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <Title title1={"BEST"} title2={"SELLERS"} />
 
-export default BestSeller
+          <p className="max-w-2xl mx-auto mt-6 text-slate-500 font-light text-base leading-relaxed px-4">
+            "Our most cherished designs, celebrated for their
+            <span className="text-slate-900 font-medium">
+              {" "}
+              authentic artistry
+            </span>
+            ."
+          </p>
+        </motion.div>
+      </div>
+
+      {/* Grid container handles its own internal width within the full-width section */}
+      <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
+        {bestSeller.map((item, index) => (
+          <motion.div
+            key={item._id || index}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <ProductItem
+              image={item.image}
+              price={item.price}
+              id={item._id}
+              name={item.name}
+            />
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Professional bottom accent */}
+      <div className="mt-20 flex justify-center items-center gap-3 opacity-30">
+        <div className="h-[1px] w-12 bg-[#009b44]"></div>
+        <div className="h-[1px] w-12 bg-[#ffcd00]"></div>
+        <div className="h-[1px] w-12 bg-[#ee2737]"></div>
+      </div>
+    </section>
+  );
+};
+
+export default BestSeller;
