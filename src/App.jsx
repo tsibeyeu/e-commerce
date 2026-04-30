@@ -38,6 +38,7 @@ const App = () => {
                     <Dashboard token={token} backend_url={backend_url} />
                   }
                 />
+
                 <Route path="/list" element={<List token={token} />} />
                 <Route path="/order" element={<Orders token={token} />} />
               </Routes>
