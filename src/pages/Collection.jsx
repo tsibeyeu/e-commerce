@@ -1,12 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
-import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
-import {
-  RiFilterOffLine,
-  RiArrowRightUpLine,
-  RiMenu5Line,
-} from "react-icons/ri";
+import { RiFilterOffLine, RiMenu5Line } from "react-icons/ri";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Collection = () => {
   const { products, search, showSearch } = useContext(ShopContext);
@@ -28,8 +24,12 @@ const Collection = () => {
       temp = temp.filter((i) =>
         i.name.toLowerCase().includes(search.toLowerCase()),
       );
+
+    // Lineage Filter (Men, Women, Kids)
     if (category.length > 0)
       temp = temp.filter((i) => category.includes(i.category));
+
+    // Piece Filter (Kemis, Kuta, etc.)
     if (subCategory.length > 0)
       temp = temp.filter((i) => subCategory.includes(i.subCategory));
 
@@ -43,62 +43,72 @@ const Collection = () => {
   }, [category, subCategory, search, showSearch, products, sortType]);
 
   return (
-    <div className="bg-[#fafafa] min-h-screen">
-      {/* 1. Constrained width for better product size */}
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 pt-20 pb-40">
-        {/* EDITORIAL HEADER */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-12">
+    <div className="bg-white min-h-screen relative overflow-hidden">
+      {/* Editorial Background Text */}
+      <div className="absolute top-40 right-[-5%] text-[15vw] font-black text-gray-50 leading-none pointer-events-none select-none uppercase tracking-tighter z-0">
+        Archive
+      </div>
+
+      <div className="max-w-[1440px] mx-auto px-6 md:px-16 pt-32 pb-40 relative z-10">
+        {/* SECTION HEADER */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-8">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-4 mb-4 text-[10px] font-black tracking-[0.5em] uppercase text-gray-400">
-              <span className="w-8 h-[1px] bg-gray-300"></span> Seasonal Archive
-            </div>
-            <Title title1={"THE"} title2={"COLLECTION"} />
-            <p className="mt-6 text-gray-500 text-lg font-light leading-relaxed max-w-lg">
-              Refined pieces curated for the modern wardrobe.
-            </p>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-4 mb-6"
+            >
+              <div className="h-[1px] w-12 bg-[#DA9F5B]"></div>
+              <p className="text-[#DA9F5B] font-black uppercase text-[10px] tracking-[0.5em]">
+                Authentic Weaves
+              </p>
+            </motion.div>
+            <h1 className="text-5xl md:text-8xl font-black text-[#33211D] uppercase tracking-tighter leading-none mb-6">
+              THE{" "}
+              <span className="italic font-serif normal-case text-[#33211D]/80">
+                Gallery.
+              </span>
+            </h1>
           </div>
 
-          <div className="flex items-center gap-8 w-full md:w-auto">
+          <div className="w-full md:w-auto">
             <select
               onChange={(e) => setSortType(e.target.value)}
-              className="bg-transparent text-[11px] font-black uppercase tracking-[0.3em] outline-none cursor-pointer border-b border-gray-200 pb-2 hover:border-black transition-all"
+              className="w-full md:w-64 bg-gray-50 p-4 text-[10px] font-black uppercase tracking-[0.3em] outline-none rounded-xl border border-transparent focus:border-[#DA9F5B] transition-all"
             >
-              <option value="relevant">SORT / RELEVANT</option>
-              <option value="low-high">PRICE: LOW-HIGH</option>
-              <option value="high-low">PRICE: HIGH-LOW</option>
+              <option value="relevant">SORT / RELEVANCE</option>
+              <option value="low-high">PRICE: LOW TO HIGH</option>
+              <option value="high-low">PRICE: HIGH TO LOW</option>
             </select>
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-20">
-          {/* ASIDE: FILTERING */}
-          <aside className="lg:w-[240px] shrink-0">
-            <div className="sticky top-32 space-y-12">
-              {/* TOGGLE HEADER */}
-              <div
-                className="flex items-center justify-between group cursor-pointer"
+        <div className="flex flex-col lg:flex-row gap-16">
+          {/* SIDEBAR FILTER */}
+          <aside className="lg:w-[260px] shrink-0">
+            <div className="sticky top-32 space-y-8">
+              {/* TOGGLE BUTTON FOR MOBILE */}
+              <button
+                className="w-full flex items-center justify-between border-b border-gray-100 pb-4 lg:cursor-default"
                 onClick={() => setShowFilter(!showFilter)}
               >
-                <h4 className="text-[10px] font-black tracking-[0.5em] uppercase">
+                <h4 className="text-[10px] font-black tracking-[0.5em] uppercase text-[#33211D]">
                   Refine By
                 </h4>
                 <RiMenu5Line
-                  className={`transition-transform duration-500 ${showFilter ? "rotate-90" : ""}`}
+                  size={18}
+                  className={`lg:hidden transition-transform ${showFilter ? "rotate-180" : ""}`}
                 />
-              </div>
+              </button>
 
-              {/* FILTER CONTENT: Fixed the conditional logic here */}
+              {/* WRAPPER FOR TOGGLE LOGIC */}
               <div
-                className={`space-y-12 transition-all duration-500 ease-in-out ${
-                  showFilter
-                    ? "block opacity-100"
-                    : "hidden lg:block lg:opacity-100"
-                }`}
+                className={`${showFilter ? "block" : "hidden"} lg:block space-y-12 animate-in fade-in slide-in-from-top-2 duration-300 lg:animate-none`}
               >
-                {/* Gender Group */}
+                {/* LINEAGE (GENDER) */}
                 <div className="space-y-6">
                   <p className="text-[9px] font-black text-gray-300 tracking-[0.4em] uppercase">
-                    Gender
+                    Lineage
                   </p>
                   <div className="flex flex-col gap-4">
                     {["Men", "Women", "Kids"].map((item) => (
@@ -107,7 +117,7 @@ const Collection = () => {
                         className="flex items-center justify-between group cursor-pointer"
                       >
                         <span
-                          className={`text-sm transition-all ${category.includes(item) ? "font-bold text-black" : "text-gray-500"}`}
+                          className={`text-xs font-black uppercase tracking-widest transition-all ${category.includes(item) ? "text-[#33211D]" : "text-gray-400"}`}
                         >
                           {item}
                         </span>
@@ -118,27 +128,27 @@ const Collection = () => {
                           onChange={(e) =>
                             toggleSelection(setCategory, e.target.value)
                           }
-                          className="peer hidden"
+                          className="hidden peer"
                         />
-                        <div className="w-1.5 h-1.5 rounded-full bg-gray-200 peer-checked:bg-black transition-all"></div>
+                        <div className="w-2 h-2 rounded-full border border-gray-200 peer-checked:bg-[#DA9F5B] peer-checked:border-[#DA9F5B] transition-all scale-75 peer-checked:scale-100"></div>
                       </label>
                     ))}
                   </div>
                 </div>
 
-                {/* Category Group */}
+                {/* THE PIECE (SUB-CATEGORY) */}
                 <div className="space-y-6">
                   <p className="text-[9px] font-black text-gray-300 tracking-[0.4em] uppercase">
-                    Category
+                    The Piece
                   </p>
                   <div className="flex flex-col gap-4">
-                    {["Topwear", "Bottomwear", "Winterwear"].map((item) => (
+                    {["Kemis", "Habesha Libs", "Kuta & Shama"].map((item) => (
                       <label
                         key={item}
                         className="flex items-center justify-between group cursor-pointer"
                       >
                         <span
-                          className={`text-sm transition-all ${subCategory.includes(item) ? "font-bold text-black" : "text-gray-500"}`}
+                          className={`text-xs font-black uppercase tracking-widest transition-all ${subCategory.includes(item) ? "text-[#33211D]" : "text-gray-400"}`}
                         >
                           {item}
                         </span>
@@ -149,38 +159,45 @@ const Collection = () => {
                           onChange={(e) =>
                             toggleSelection(setSubCategory, e.target.value)
                           }
-                          className="peer hidden"
+                          className="hidden peer"
                         />
-                        <div className="w-1.5 h-1.5 bg-gray-200 peer-checked:bg-black transition-all"></div>
+                        <div className="w-4 h-[1px] bg-gray-200 peer-checked:bg-[#33211D] peer-checked:w-8 transition-all"></div>
                       </label>
                     ))}
                   </div>
                 </div>
 
-                {/* Reset Button */}
-                {(category.length > 0 || subCategory.length > 0) && (
-                  <button
-                    onClick={() => {
-                      setCategory([]);
-                      setSubCategory([]);
-                    }}
-                    className="flex items-center gap-2 text-[10px] font-black tracking-widest uppercase text-red-500 pt-4 hover:opacity-70 transition-opacity"
-                  >
-                    <RiFilterOffLine /> Clear All
-                  </button>
-                )}
+                <AnimatePresence>
+                  {(category.length > 0 || subCategory.length > 0) && (
+                    <motion.button
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onClick={() => {
+                        setCategory([]);
+                        setSubCategory([]);
+                      }}
+                      className="flex items-center gap-2 text-[9px] font-black tracking-widest uppercase text-red-500 pt-4"
+                    >
+                      <RiFilterOffLine /> Reset Filters
+                    </motion.button>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </aside>
 
-          {/* 2. MAIN GRID: Optimized for larger product items */}
+          {/* PRODUCT GRID */}
           <main className="flex-1">
             {filterProduct.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-20">
+              <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-16">
                 {filterProduct.map((item, index) => (
-                  <div
-                    key={index}
-                    className="group animate-in fade-in slide-in-from-bottom-6 duration-700"
+                  <motion.div
+                    key={item._id || index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
                   >
                     <ProductItem
                       name={item.name}
@@ -188,19 +205,13 @@ const Collection = () => {
                       price={item.price}
                       image={item.image}
                     />
-                    <div className="mt-4 flex items-center justify-between">
-                      <span className="text-[10px] font-black tracking-widest text-gray-300 uppercase">
-                        View Article
-                      </span>
-                      <RiArrowRightUpLine className="opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1 group-hover:-translate-y-1" />
-                    </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             ) : (
-              <div className="h-[40vh] flex items-center justify-center border-t border-gray-100">
-                <p className="text-gray-400 font-light italic">
-                  No matching results found.
+              <div className="h-[40vh] flex flex-col items-center justify-center text-center">
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-300">
+                  Archive empty for this selection
                 </p>
               </div>
             )}

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import ProductItem from "./ProductItem.jsx";
-import Title from "./Title.jsx";
+import { motion } from "framer-motion";
 
 const LatestCollection = () => {
   const { products } = useContext(ShopContext);
@@ -15,46 +15,74 @@ const LatestCollection = () => {
 
   if (!products || products.length === 0) {
     return (
-      <div className="min-h-[40vh] flex items-center justify-center text-slate-400 animate-pulse">
-        Collecting heritage pieces...
+      <div className="min-h-[40vh] flex flex-col items-center justify-center gap-4">
+        <div className="w-12 h-12 border-2 border-[#ffcd00] border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-[10px] font-black uppercase tracking-[.4em] text-slate-400">
+          Weaving History...
+        </p>
       </div>
     );
   }
 
   return (
-    <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] py-24 px-6 md:px-16 bg-[#fafafa]">
-      <div className="text-center mb-20">
-        {/* Using the improved Title component */}
-        <Title title1={"LATEST"} title2={"COLLECTIONS"} />
-
-        {/* Redesigned Description Text */}
-        <p className="mt-4 text-slate-500 text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed tracking-wide">
-          "Where ancient craftsmanship meets modern elegance. Explore our
-          curated selection of{" "}
-          <span className="text-slate-900 font-medium italic">
-            traditional Ethiopian attire
-          </span>
-          , reimagined for today."
-        </p>
+    <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] py-32 px-6 md:px-16 bg-white overflow-hidden">
+      {/* Decorative Text in background */}
+      <div className="absolute top-20 right-0 text-[18vw] font-black text-gray-50 leading-none pointer-events-none select-none uppercase tracking-tighter opacity-50">
+        New Arrival
       </div>
 
-      <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8">
-        {latestProducts.map((item, index) => (
-          <ProductItem
-            key={item._id || index}
-            id={item._id}
-            image={item.image}
-            name={item.name}
-            price={item.price}
-          />
-        ))}
-      </div>
+      <div className="container mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-[2px] w-8 bg-[#009b44]"></div>
+              <p className="text-[#ee2737] font-black uppercase text-[10px] tracking-[0.4em]">
+                2026 Collection
+              </p>
+            </div>
+            <h2 className="text-5xl md:text-7xl font-black text-[#33211D] uppercase tracking-tighter leading-none">
+              THE LATEST <br />
+              <span className="text-[#ffcd00]">CURATION.</span>
+            </h2>
+          </div>
 
-      {/* Added a professional footer link for the section */}
-      <div className="text-center mt-20">
-        <p className="text-[10px] uppercase tracking-[.5em] text-slate-400 cursor-pointer hover:text-[#ffcd00] transition-colors">
-          View All Products —
-        </p>
+          <p className="text-gray-400 text-xs md:text-sm font-medium max-w-xs leading-relaxed border-l-2 border-gray-100 pl-6">
+            Explore hand-woven masterpieces where traditional Tibeb artistry
+            meets contemporary Ethiopian silhouettes.
+          </p>
+        </div>
+
+        {/* Grid with Asymmetric Spacing feel */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 gap-y-16">
+          {latestProducts.map((item, index) => (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              key={item._id || index}
+            >
+              <ProductItem
+                id={item._id}
+                image={item.image}
+                name={item.name}
+                price={item.price}
+              />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Pro CTA Link */}
+        <div className="mt-24 text-center">
+          <button className="group flex flex-col items-center mx-auto">
+            <span className="text-[10px] font-black uppercase tracking-[0.6em] text-gray-400 group-hover:text-[#ffcd00] transition-colors mb-4">
+              Discover Full Catalog
+            </span>
+            <div className="w-12 h-[1px] bg-gray-200 relative overflow-hidden">
+              <div className="absolute inset-0 bg-[#ffcd00] -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+            </div>
+          </button>
+        </div>
       </div>
     </section>
   );

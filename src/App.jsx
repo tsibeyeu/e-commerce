@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom"; // Added useLocation
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
@@ -12,18 +12,26 @@ import Login from "./pages/Login.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import SearchBar from "./components/SearchBar.jsx";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Verify from "./pages/Verify.jsx";
 import Profile from "./pages/Profile.jsx";
 import ProfileEdit from "./pages/ProfileEdit.jsx";
 
 const App = () => {
+  const location = useLocation();
+
+  // Define the pages where you DON'T want the Navbar/Footer to appear
+  const hideLayout = location.pathname === "/login";
+
   return (
-    <div className="px-4 sm:px-[5vw] md:px-[7vm] lg:px-[10vw]">
+    <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[10vw]">
       <ToastContainer />
-      <Navbar />
-      <SearchBar />
+
+      {/* Only show if NOT on login page */}
+      {!hideLayout && <Navbar />}
+      {!hideLayout && <SearchBar />}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
@@ -44,7 +52,9 @@ const App = () => {
           }
         />
       </Routes>
-      <Footer />
+
+      {/* Only show if NOT on login page */}
+      {!hideLayout && <Footer />}
     </div>
   );
 };

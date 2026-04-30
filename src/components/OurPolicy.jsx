@@ -1,66 +1,85 @@
 import React from "react";
 import { assets } from "../assets/assets";
 import { motion } from "framer-motion";
+import { FaRetweet, FaAward, FaHeadset } from "react-icons/fa"; // Optional: high-quality icons
 
 const OurPolicy = () => {
   const policies = [
     {
       icon: assets.exchange_icon,
-      title: "Easy Exchange",
-      desc: "Hassle-free exchange for your perfect fit",
-      color: "bg-[#009b44]/5",
+      title: "Effortless Exchange",
+      desc: "Find your perfect silhouette with our seamless exchange process.",
+      accent: "bg-[#009b44]",
     },
     {
       icon: assets.quality_icon,
-      title: "7 Days Return",
-      desc: "Confidence in every thread we weave",
-      color: "bg-[#ffcd00]/5",
+      title: "7-Day Quality Guarantee",
+      desc: "Every thread is inspected to meet the highest standards of Tibeb.",
+      accent: "bg-[#ffcd00]",
     },
     {
       icon: assets.support_img,
-      title: "24/7 Support",
-      desc: "Our dedicated team is always here for you",
-      color: "bg-[#ee2737]/5",
+      title: "Concierge Support",
+      desc: "Our dedicated heritage specialists are available 24/7 for you.",
+      accent: "bg-[#ee2737]",
     },
   ];
 
   return (
-    /* 1. Full-Width Breakout Container */
-    <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] py-24 px-6 md:px-16 bg-white border-t border-slate-100">
-      <div className="max-w-[1440px] mx-auto grid grid-cols-1 sm:grid-cols-3 gap-12 md:gap-16">
-        {policies.map((policy, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-            className="flex flex-col items-center text-center group"
-          >
-            {/* Icon Container with Cultural Tints */}
-            <div
-              className={`w-20 h-20 ${policy.color} rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-white group-hover:shadow-lg`}
+    <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] py-32 px-6 md:px-16 bg-white overflow-hidden">
+      {/* Subtle Background Pattern (Habesha Weave Feel) */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://transparenttextures.com')]"></div>
+
+      <div className="container mx-auto relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
+          {policies.map((policy, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: index * 0.2 }}
+              className="flex flex-col items-center text-center group"
             >
-              <img
-                src={policy.icon}
-                className="w-10 transition-transform duration-300 group-hover:scale-110"
-                alt={policy.title}
-              />
-            </div>
+              {/* Refined Icon Container */}
+              <div className="relative mb-10">
+                {/* Cultural Shadow Glow */}
+                <div
+                  className={`absolute inset-0 blur-2xl opacity-10 rounded-full ${policy.accent}`}
+                ></div>
 
-            {/* Typography with Professional Spacing */}
-            <h3 className="text-sm md:text-base font-bold uppercase tracking-[0.2em] text-slate-800 mb-3">
-              {policy.title}
-            </h3>
+                <div className="relative w-24 h-24 bg-gray-50 rounded-[2rem] flex items-center justify-center transition-all duration-700 group-hover:bg-[#33211D] group-hover:rotate-[10deg] shadow-sm group-hover:shadow-2xl">
+                  <img
+                    src={policy.icon}
+                    className="w-10 h-10 object-contain transition-all duration-500 group-hover:invert group-hover:scale-110"
+                    alt={policy.title}
+                  />
+                </div>
 
-            <p className="text-xs md:text-sm text-slate-500 font-light leading-relaxed max-w-[220px]">
-              {policy.desc}
-            </p>
+                {/* Cultural Dot Detail */}
+                <div
+                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full ${policy.accent} opacity-40`}
+                ></div>
+              </div>
 
-            {/* Subtle Hover Indicator */}
-            <div className="w-8 h-[2px] bg-slate-100 mt-6 group-hover:bg-[#ffcd00] group-hover:w-16 transition-all duration-500"></div>
-          </motion.div>
-        ))}
+              {/* Text Content */}
+              <h3 className="text-[#33211D] text-xs font-black uppercase tracking-[0.4em] mb-4 group-hover:text-[#DA9F5B] transition-colors">
+                {policy.title}
+              </h3>
+
+              <p className="text-gray-400 text-xs md:text-sm font-medium leading-relaxed max-w-[260px] uppercase tracking-wider opacity-80">
+                {policy.desc}
+              </p>
+
+              {/* Modern Minimalist Divider */}
+              <div className="mt-8 flex gap-1">
+                <div className="w-1 h-1 rounded-full bg-gray-100 group-hover:bg-[#DA9F5B] transition-colors"></div>
+                <div className="w-8 h-[1px] bg-gray-100 group-hover:bg-[#DA9F5B] group-hover:w-12 transition-all duration-500"></div>
+                <div className="w-1 h-1 rounded-full bg-gray-100 group-hover:bg-[#DA9F5B] transition-colors"></div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
