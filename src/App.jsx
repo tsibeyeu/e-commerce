@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, useLocation } from "react-router-dom"; // Added useLocation
+import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
@@ -17,18 +17,20 @@ import "react-toastify/dist/ReactToastify.css";
 import Verify from "./pages/Verify.jsx";
 import Profile from "./pages/Profile.jsx";
 import ProfileEdit from "./pages/ProfileEdit.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
 
 const App = () => {
   const location = useLocation();
 
-  // Define the pages where you DON'T want the Navbar/Footer to appear
-  const hideLayout = location.pathname === "/login";
+  // hide navbar/footer on these pages
+  const hideLayout = ["/login", "/forgot-password", "/reset-password"].includes(
+    location.pathname,
+  );
 
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[10vw]">
       <ToastContainer />
-
-      {/* Only show if NOT on login page */}
       {!hideLayout && <Navbar />}
       {!hideLayout && <SearchBar />}
 
@@ -45,6 +47,8 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/place-order" element={<PlaceOrders />} />
         <Route path="/verify" element={<Verify />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route
           path="*"
           element={
@@ -53,7 +57,6 @@ const App = () => {
         />
       </Routes>
 
-      {/* Only show if NOT on login page */}
       {!hideLayout && <Footer />}
     </div>
   );

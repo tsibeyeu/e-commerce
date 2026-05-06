@@ -8,10 +8,12 @@ import {
   RiUserLine,
   RiArrowRightLine,
 } from "react-icons/ri";
+import { useNavigate } from "react-router-dom"; // ← ADD THIS
 
 const Login = () => {
   const [currentState, setCurrentState] = useState("Login");
   const { token, setToken, backendURL, Navigate } = useContext(ShopContext);
+  const navigate = useNavigate(); // ← ADD THIS
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -129,9 +131,14 @@ const Login = () => {
         {/* Action Links */}
         <div className="flex flex-col gap-4 mt-8">
           <div className="flex justify-between text-[11px] font-bold tracking-widest uppercase text-gray-400">
-            <span className="cursor-pointer hover:text-black transition-colors">
+            {/* ← ONLY THIS LINE CHANGED — added onClick to navigate */}
+            <span
+              className="cursor-pointer hover:text-black transition-colors"
+              onClick={() => navigate("/forgot-password")}
+            >
               Forgot Password?
             </span>
+
             <span
               className="cursor-pointer text-black border-b border-black"
               onClick={() =>
