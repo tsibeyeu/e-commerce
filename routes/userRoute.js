@@ -6,25 +6,25 @@ import {
   getMe,
   updateMe,
   changePassword,
+  forgotPassword,
+  resetPassword,
 } from "../controllers/userController.js";
+import authUser from "../middleware/auth.js";
 
 const userRouter = express.Router();
 
-// User login route
+// Public routes — no auth needed
 userRouter.post("/login", loginUser);
-// User registration route
 userRouter.post("/register", registerUser);
-// Admin login route
 userRouter.post("/admin", adminLogin);
-userRouter.get("/me", getMe);
-userRouter.put("/me", updateMe);
-userRouter.put("/password", changePassword);
+
+// Protected routes — authUser runs first, then the controller
+userRouter.get("/me", authUser, getMe);
+userRouter.put("/me", authUser, updateMe);
+userRouter.put("/password", authUser, changePassword);
+
+// add these two — no auth middleware needed (user is not logged in)
+userRouter.post("/forgot-password", forgotPassword);
+userRouter.post("/reset-password", resetPassword);
+
 export default userRouter;
-/*
-//   SIMPLIEPIED  method to use common route
-app.use('/api/user',useRoute) // use common route for every route methods and this is to connect the middleware to app
-
-const useRoute=express.route() // this is middlewar
-useRoute.route('/').get().pos()
-
- */

@@ -19,6 +19,8 @@ const userSchema = new mongoose.Schema(
       type: Object,
       default: {},
     },
+    resetToken: { type: String },
+    resetTokenExpire: { type: Date },
   },
   { minimize: false },
 );

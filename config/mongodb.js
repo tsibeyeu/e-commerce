@@ -1,20 +1,22 @@
 import mongoose from "mongoose";
 
-const connectDB=async ()=>{
+const connectDB = async () => {
+  if (!process.env.MONGODB_URL) {
+    throw new Error("MONGODB_URL is missing from .env file");
+  }
 
-    mongoose.connection.on("connected",()=>{
-        console.log("MongoDB connected successfully");
-    })
+  mongoose.connection.on("connected", () => {
+    console.log("MongoDB connected successfully");
+  });
 
-    mongoose.connection.on("error",(err)=>{
-        console.log("MongoDB connection failed", err);
-    })
+  mongoose.connection.on("error", (err) => {
+    console.log("MongoDB connection failed", err);
+  });
 
-    await mongoose.connect(`${process.env.MONGODB_URL}/ecommerce-app`)
-}
+  await mongoose.connect(`${process.env.MONGODB_URL}/ecommerce-app`);
+};
 
 export default connectDB;
-
 // import mongoose from "mongoose";
 
 // const buildUri = (envUri, dbName = "ecommerce-app") => {
