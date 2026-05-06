@@ -19,14 +19,20 @@ import Profile from "./pages/Profile.jsx";
 import ProfileEdit from "./pages/ProfileEdit.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
+import GoogleCallback from "./pages/GoogleCallback.jsx";
+
+// add to routes
 
 const App = () => {
   const location = useLocation();
 
   // hide navbar/footer on these pages
-  const hideLayout = ["/login", "/forgot-password", "/reset-password"].includes(
-    location.pathname,
-  );
+  const hideLayout = [
+    "/login",
+    "/forgot-password",
+    "/reset-password",
+    "/google-callback",
+  ].includes(location.pathname);
 
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[10vw]">
@@ -49,6 +55,7 @@ const App = () => {
         <Route path="/verify" element={<Verify />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/google-callback" element={<GoogleCallback />} />
         <Route
           path="*"
           element={

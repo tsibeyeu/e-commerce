@@ -8,12 +8,12 @@ import {
   RiUserLine,
   RiArrowRightLine,
 } from "react-icons/ri";
-import { useNavigate } from "react-router-dom"; // ← ADD THIS
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [currentState, setCurrentState] = useState("Login");
   const { token, setToken, backendURL, Navigate } = useContext(ShopContext);
-  const navigate = useNavigate(); // ← ADD THIS
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -131,14 +131,12 @@ const Login = () => {
         {/* Action Links */}
         <div className="flex flex-col gap-4 mt-8">
           <div className="flex justify-between text-[11px] font-bold tracking-widest uppercase text-gray-400">
-            {/* ← ONLY THIS LINE CHANGED — added onClick to navigate */}
             <span
               className="cursor-pointer hover:text-black transition-colors"
               onClick={() => navigate("/forgot-password")}
             >
               Forgot Password?
             </span>
-
             <span
               className="cursor-pointer text-black border-b border-black"
               onClick={() =>
@@ -149,9 +147,43 @@ const Login = () => {
             </span>
           </div>
 
-          <button className="group w-full bg-black text-white rounded-2xl py-4 font-bold text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 hover:bg-gray-900 transition-all active:scale-[0.98] mt-4">
+          {/* Sign In / Sign Up button */}
+          <button
+            type="submit"
+            className="group w-full bg-black text-white rounded-2xl py-4 font-bold text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 hover:bg-gray-900 transition-all active:scale-[0.98] mt-4"
+          >
             {currentState === "Login" ? "Sign In" : "Sign Up"}
             <RiArrowRightLine className="group-hover:translate-x-1 transition-transform" />
+          </button>
+
+          {/* ── Divider ── */}
+          <div className="flex items-center gap-3 my-1">
+            <div className="flex-1 h-px bg-gray-100" />
+            <span className="text-[10px] font-bold tracking-widest uppercase text-gray-300">
+              or
+            </span>
+            <div className="flex-1 h-px bg-gray-100" />
+          </div>
+
+          {/* ── Google Button ── */}
+          {/* ── Google Button ── */}
+          <button
+            type="button"
+            onClick={() =>
+              (window.location.href = `${backendURL}/api/user/auth/google/${
+                currentState === "Login" ? "login" : "register"
+              }`)
+            }
+            className="w-full bg-white border border-gray-200 text-gray-700 rounded-2xl py-4 font-bold text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 hover:bg-gray-50 transition-all active:scale-[0.98]"
+          >
+            <img
+              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+              alt="Google"
+              className="w-4 h-4"
+            />
+            {currentState === "Login"
+              ? "Login with Google"
+              : "Register with Google"}
           </button>
         </div>
       </form>
