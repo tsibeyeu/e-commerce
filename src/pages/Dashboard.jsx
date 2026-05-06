@@ -6,6 +6,7 @@ import {
   RiShoppingBag3Fill,
   RiTShirt2Fill,
   RiArrowUpSLine,
+  RiHistoryLine,
 } from "react-icons/ri";
 import {
   Chart as ChartJS,
@@ -17,6 +18,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler,
 } from "chart.js";
 
 ChartJS.register(
@@ -28,21 +30,30 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
+  Filler,
 );
 
 const Dashboard = ({ token, backend_url }) => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Inside Dashboard.jsx
   useEffect(() => {
     const fetchStats = async () => {
       try {
         const res = await axios.get(`${backend_url}/api/admin/stats`, {
-          headers: { token },
+          headers: { token }, // Make sure 'token' is passed from App.jsx
         });
-        if (res.data?.success) setStats(res.data.stats);
+
+        console.log("SERVER DATA:", res.data); // <--- CHECK THIS IN F12 CONSOLE
+
+        if (res.data?.success) {
+          setStats(res.data.stats);
+        } else {
+          console.error("Backend failed:", res.data.message);
+        }
       } catch (err) {
-        console.error("Dashboard Fetch Error", err);
+        console.error("Dashboard Fetch Error:", err);
       } finally {
         setLoading(false);
       }
@@ -51,36 +62,35 @@ const Dashboard = ({ token, backend_url }) => {
   }, [token, backend_url]);
 
   const lineData = {
-    labels: stats?.ordersOverTime?.labels || [
-      "Mon",
-      "Tue",
-      "Wed",
-      "Thu",
-      "Fri",
-      "Sat",
-      "Sun",
-    ],
+    labels: stats?.ordersOverTime?.labels || [],
     datasets: [
       {
         label: "Orders",
-        data: stats?.ordersOverTime?.values || [0, 0, 0, 0, 0, 0, 0],
+        data: stats?.ordersOverTime?.values || [],
         borderColor: "#DA9F5B",
         backgroundColor: "rgba(218, 159, 91, 0.1)",
         fill: true,
         tension: 0.4,
-        pointRadius: 4,
+        pointRadius: 6,
+        pointBackgroundColor: "#33211D",
       },
     ],
   };
 
   const doughnutData = {
-    labels: stats?.revenueByCategory?.labels || ["Men", "Women", "Kids"],
+    labels: stats?.revenueByCategory?.labels || [],
     datasets: [
       {
-        data: stats?.revenueByCategory?.values || [1, 1, 1],
-        backgroundColor: ["#33211D", "#DA9F5B", "#E5E7EB"],
+        data: stats?.revenueByCategory?.values || [],
+        backgroundColor: [
+          "#33211D",
+          "#DA9F5B",
+          "#E5E7EB",
+          "#ee2737",
+          "#009b44",
+        ],
         borderWidth: 0,
-        hoverOffset: 10,
+        hoverOffset: 15,
       },
     ],
   };
@@ -93,98 +103,115 @@ const Dashboard = ({ token, backend_url }) => {
     );
 
   return (
-    <div className="p-8">
-      {/* Editorial Header */}
+    <div className="p-8 pb-20 bg-[#fafafa] min-h-screen">
       <header className="mb-12">
         <h1 className="text-3xl font-black text-[#33211D] uppercase tracking-tighter">
           Business Overview
         </h1>
         <p className="text-gray-400 text-xs font-bold uppercase tracking-widest mt-1">
-          Real-time performance of Ethio-Kemis
+          Real-time performance
         </p>
       </header>
 
-      {/* Modern Stat Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
         <StatCard
           title="Total Revenue"
           value={`${stats?.totalRevenue?.toLocaleString() || 0} ETB`}
           icon={<RiMoneyDollarCircleFill size={24} />}
-          trend="+12.5%"
-          color="text-emerald-600"
+          trend={stats?.revenueGrowth}
         />
         <StatCard
           title="Total Orders"
           value={stats?.totalOrders || 0}
           icon={<RiShoppingBag3Fill size={24} />}
-          trend="+4.2%"
-          color="text-blue-600"
+          trend={stats?.orderGrowth}
         />
         <StatCard
-          title="Inventory Items"
+          title="Inventory"
           value={stats?.productsCount || 0}
           icon={<RiTShirt2Fill size={24} />}
           trend="Live"
-          color="text-amber-600"
         />
       </div>
 
-      {/* Charts Section */}
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100">
-          <div className="flex justify-between items-center mb-8">
-            <h3 className="font-black text-xs uppercase tracking-widest text-gray-400">
-              Order Velocity
-            </h3>
-            <span className="text-[10px] font-black bg-gray-50 px-3 py-1 rounded-full uppercase tracking-tighter">
-              Last 7 Days
-            </span>
-          </div>
-          <div className="h-[300px] flex items-center">
+      <div className="grid lg:grid-cols-3 gap-8 mb-12">
+        <div className="lg:col-span-2 bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100 h-[450px]">
+          <h3 className="font-black text-xs uppercase tracking-widest text-gray-400 mb-6">
+            Order Activity (30 Days)
+          </h3>
+          <div className="h-[320px]">
             <Line
               data={lineData}
               options={{
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } },
               }}
             />
           </div>
         </div>
 
-        <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100">
-          <h3 className="font-black text-xs uppercase tracking-widest text-gray-400 mb-8">
-            Demographic Split
+        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+          <h3 className="font-black text-xs uppercase tracking-widest text-gray-400 mb-8 text-center">
+            Category Split
           </h3>
-          <div className="h-[250px] flex items-center justify-center">
+          <div className="h-[280px] flex items-center justify-center">
             <Doughnut
               data={doughnutData}
               options={{
-                cutout: "75%",
-                plugins: {
-                  legend: {
-                    position: "bottom",
-                    labels: { boxWidth: 8, font: { weight: "bold" } },
-                  },
-                },
+                cutout: "80%",
+                plugins: { legend: { position: "bottom" } },
               }}
             />
           </div>
         </div>
+      </div>
+
+      <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+        <div className="p-8 border-b border-gray-50 flex items-center gap-3">
+          <RiHistoryLine className="text-[#DA9F5B]" size={20} />
+          <h3 className="font-black text-xs uppercase tracking-widest text-[#33211D]">
+            Recent Transactions
+          </h3>
+        </div>
+        <table className="w-full text-left">
+          <thead className="bg-gray-50/50 text-[10px] font-black uppercase text-gray-400 tracking-widest">
+            <tr>
+              <th className="p-6">Order ID</th>
+              <th className="p-6">Amount</th>
+              <th className="p-6">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-50">
+            {stats?.recentOrders?.map((order, index) => (
+              <tr
+                key={index}
+                className="text-xs font-bold text-[#33211D] hover:bg-gray-50 transition-colors"
+              >
+                <td className="p-6 uppercase">#{order._id.slice(-6)}</td>
+                <td className="p-6">{order.amount.toLocaleString()} ETB</td>
+                <td className="p-6">
+                  <span className="px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-[9px] uppercase font-black">
+                    {order.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 };
 
-const StatCard = ({ title, value, icon, trend, color }) => (
-  <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">
+const StatCard = ({ title, value, icon, trend }) => (
+  <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100 group transition-all">
     <div className="flex justify-between items-start mb-6">
       <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-[#33211D] group-hover:bg-[#DA9F5B] group-hover:text-white transition-all duration-500">
         {icon}
       </div>
-      <div
-        className={`flex items-center text-[10px] font-black uppercase ${color}`}
-      >
-        <RiArrowUpSLine /> {trend}
+      <div className="flex items-center text-[10px] font-black uppercase text-emerald-600">
+        {trend === "Live" ? trend : `↑ ${trend}%`}
       </div>
     </div>
     <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
